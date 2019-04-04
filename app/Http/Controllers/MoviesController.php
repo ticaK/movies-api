@@ -8,9 +8,10 @@ use App\Movie;
 class MoviesController extends Controller
 {
   
-    public function index()
+    public function index(Request $request)
     {
-       return Movie::all();
+       $searchTerm = $request->input('title');  
+       return Movie::search(Movie::query(),$searchTerm)->get();
     }
 
     public function store(Request $request)
@@ -20,8 +21,7 @@ class MoviesController extends Controller
             'director'=>'required',
             'duration'=>'required|min:1|max:500',
             'releaseDate'=>'required',
-            'imageUrl'=>'required|url',
-            
+            'imageUrl'=>'required|url'    
         ]);
         return Movie::create($request->all());
     }
